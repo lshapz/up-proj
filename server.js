@@ -9,20 +9,16 @@ var baseURL = "https://api.data.gov/ed/collegescorecard/v1/schools?school.state=
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors())
-// routes(app);
 
 let schools = [];
 let pageCount;  
 
-
 app.listen(3000, () => {
     console.log("Server running on port 3000");
-    
     axios.get(baseURL)
     .then(function (response) {
-        // console.log(response)
-        // console.log('pages' response.data.metadata.total)
-        pageCount = Math.round(response.data.metadata.total / response.data.metadata.per_page)
+        let totes = response.data.metadata.total;
+        pageCount = Math.round(totes / response.data.metadata.per_page)
         schools.push(response.data.results)
     
         for (let i=0; i < pageCount; i++) {
@@ -30,14 +26,15 @@ app.listen(3000, () => {
             axios.get(url)
                 .then(function (response) {
                     schools.push(response.data.results)
+                    if (schools.length > pageCount) {
+                        console.log('all schools accounted for');
+                    }
                 })
                 .catch((err)=>console.log(err))
         }
-
             
     })
         
-
   })
  
 
