@@ -10,6 +10,11 @@ npm install
 npm run serve
 ```
 
+### Runs server and collects data from api.data.gov
+```
+npm run xpress
+```
+
 ### Compiles and minifies for production
 ```
 npm run build
