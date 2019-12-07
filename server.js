@@ -8,7 +8,7 @@ var baseURL = "https://api.data.gov/ed/collegescorecard/v1/schools?school.state=
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors())
+app.use(cors());
 
 let schools = [];
 let pageCount;  
@@ -18,11 +18,11 @@ app.listen(3000, () => {
     axios.get(baseURL)
     .then(function (response) {
         let totes = response.data.metadata.total;
-        pageCount = Math.round(totes / response.data.metadata.per_page)
-        schools.push(response.data.results)
+        pageCount = Math.round(totes / response.data.metadata.per_page);
+        schools.push(response.data.results);
     
         for (let i=0; i < pageCount; i++) {
-            let url = baseURL.split(`page=0`).join(`page=${i + 1}`)
+            let url = baseURL.split(`page=0`).join(`page=${i + 1}`);
             axios.get(url)
                 .then(function (response) {
                     schools.push(response.data.results)
@@ -41,6 +41,6 @@ app.listen(3000, () => {
    
 app.get("/schools", (req, res, next) => {
     res.json(flatten(schools));
-   });
+});
    
   

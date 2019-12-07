@@ -6,16 +6,16 @@
         <th @click="nameSort">
           School Name
           <span class="caret">
-            <span v-if="currentSort == 'sortedByName'"> &or; </span>
-            <span v-if="currentSort == 'sortedByNameRev'"> &and; </span>
+            <span v-if="currentSort == 'sortedByName'">&or;</span>
+            <span v-if="currentSort == 'sortedByNameRev'">&and;</span>
           </span>
         </th>
         
         <th @click="sizeSort">
-          School Size
+          Size
           <span class="caret">
-            <span v-if="currentSort == 'sortedBySize'"> &or; </span>
-            <span v-if="currentSort == 'sortedBySizeRev'"> &and; </span>
+            <span v-if="currentSort == 'sortedBySize'">&or;</span>
+            <span v-if="currentSort == 'sortedBySizeRev'">&and;</span>
           </span>
         </th>
         <!-- 
@@ -136,7 +136,4 @@ tr > * {
   padding-left: 1%;
 }
 
-th {
-  min-width: 90px;
-}
 </style>
