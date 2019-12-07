@@ -6,16 +6,16 @@
         <th @click="nameSort">
           School Name
           <span class="caret">
-            <span v-if="currentSort == 'A-Z'"> &or; </span>
-            <span v-if="currentSort == 'Z-A'"> &and; </span>
+            <span v-if="currentSort == 'sortedByName'"> &or; </span>
+            <span v-if="currentSort == 'sortedByNameRev'"> &and; </span>
           </span>
         </th>
         
         <th @click="sizeSort">
           School Size
           <span class="caret">
-            <span v-if="currentSort == '1-10'"> &or; </span>
-            <span v-if="currentSort == '10-1'"> &and; </span>
+            <span v-if="currentSort == 'sortedBySize'"> &or; </span>
+            <span v-if="currentSort == 'sortedBySizeRev'"> &and; </span>
           </span>
         </th>
         <!-- 
@@ -58,39 +58,18 @@ export default {
     return {
       msg: "Hello World",
       schools: [],
-      currentSort: "A-Z",
-      sortOptions: ["A-Z", "Z-A", "1-10", "10-1"]
+      currentSort: "sortedByName",
+      sortOptions: ["sortedByName", "sortedByNameRev", "sortedBySize", "sortedBySizeRev"]
     }
   },
   computed: {
     schoolsToShow(){
-      switch (this.currentSort) {
-        case "A-Z": 
-          return this.sortedByName
-          break;
-        case "Z-A":
-          return this.sortedByName.reverse()
-          break;
-        case "1-10": 
-          return this.sortedBySize
-          break;
-        case "10-1":
-          return this.sortedBySize.reverse()
-          break;
-        default: 
-          return this.sortedByName; 
-      }
-
-    },
-    sortedBySize(){
-      return this.schools.sort((a,b)=>{
-        return a["latest.student.size"] - b["latest.student.size"]
-      })
+      return this[this.currentSort];
     },
     sortedByName() {
       return this.schools.sort((a,b)=>{
-        let nameA =  a["school.name"]
-        let nameB = b["school.name"]
+        let nameA =  a["school.name"];
+        let nameB = b["school.name"];
         if (nameA < nameB) {
           return -1;
         }
@@ -100,36 +79,41 @@ export default {
         return 0;
 
       })
+    },
+    sortedByNameRev() {
+      return this.sortedByName.reverse();
+    },
+    sortedBySize(){
+      return this.schools.sort((a,b)=>{
+        return a["latest.student.size"] - b["latest.student.size"];
+      })
+    },
+    sortedBySizeRev() {
+      return this.sortedBySize.reverse();
     }
   },
   methods: {
     nameSort() {
-      if (this.currentSort === "A-Z") {
-        this.currentSort = "Z-A"
+      if (this.currentSort === "sortedByNameRev") {
+        this.currentSort = "sortedByName";
       } else {
-        this.currentSort = "A-Z"
+        this.currentSort = "sortedByNameRev";
       }
     },
     sizeSort() {
-      if (this.currentSort === "1-10") {
-        this.currentSort = "10-1"
+      if (this.currentSort === "sortedBySizeRev") {
+        this.currentSort = "sortedBySize";
       } else {
-        this.currentSort = "1-10"
+        this.currentSort = "sortedBySizeRev";
       }
     }
   },
   beforeMount() {
     axios.get('http://localhost:3000/schools')
       .then((response)=>{
-        console.log(this)
-        this.schools = response.data
+        this.schools = response.data;
       })
       .catch((err)=>console.error(err))
-  },
-  watch:{
-    schools(newThing, oldThing) {
-      
-    }
   }
 }
 </script>
